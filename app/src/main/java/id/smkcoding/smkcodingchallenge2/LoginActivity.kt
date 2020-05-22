@@ -28,6 +28,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         } else {
             intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 
