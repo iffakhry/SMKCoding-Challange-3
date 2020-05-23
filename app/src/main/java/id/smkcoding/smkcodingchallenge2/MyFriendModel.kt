@@ -1,6 +1,6 @@
 package id.smkcoding.smkcodingchallenge2
 
-class MyFriendModel (
+data class MyFriendModel (
     private var nama : String,
     private var email: String,
     private var telp : String,
