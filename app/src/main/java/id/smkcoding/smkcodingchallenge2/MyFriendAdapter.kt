@@ -1,9 +1,9 @@
 package id.smkcoding.smkcodingchallenge2
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.my_friends_item.*
@@ -11,9 +11,9 @@ import kotlinx.android.synthetic.main.my_friends_item.*
 /**
  * Created by Fakhry on 5/7/20.
  */
+
 class MyFriendAdapter(
-    private val context: FragmentActivity?,
-    private val list: ArrayList<MyFriendModel>
+    private val context: Context, private val list: ArrayList<MyFriendModel>
 )
     : RecyclerView.Adapter<MyFriendAdapter.ViewHolder> () {
 

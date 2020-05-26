@@ -1,9 +1,11 @@
 package id.smkcoding.smkcodingchallenge2
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.internal.ContextUtils.getActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -27,7 +29,7 @@ class MyFriendActivity : AppCompatActivity() {
         Telp = findViewById<EditText>(R.id.telp)
         Alamat = findViewById<EditText>(R.id.alamat)
 
-        ref = FirebaseDatabase.getInstance().getReference("Teman") //path: Teman
+        ref = FirebaseDatabase.getInstance().getReference()
         auth = FirebaseAuth.getInstance() //Mendapakan Instance Firebase Autentifikasi
 
         simpan.setOnClickListener{
@@ -54,14 +56,17 @@ class MyFriendActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT).show()
         } else {
             val teman = MyFriendModel(getNama, getEmail, getTelp, getAlamat)
-            val temanId = ref.push().key.toString()
-            ref.child(getUserID).child(temanId).setValue(teman).addOnCompleteListener {
+            //val temanId = ref.push().key.toString()
+            ref.child("Teman").push().setValue(teman).addOnCompleteListener {
                 Toast.makeText(this, "Data Berhasil Disimpan", Toast.LENGTH_SHORT).show()
                 Nama!!.setText("")
                 Email!!.setText("")
                 Telp!!.setText("")
                 Alamat!!.setText("")
+
             }
+            val intent = Intent (this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 
