@@ -57,7 +57,7 @@ class MyFriendActivity : AppCompatActivity() {
         } else {
             val teman = MyFriendModel(getNama, getEmail, getTelp, getAlamat)
             //val temanId = ref.push().key.toString()
-            ref.child("Teman").push().setValue(teman).addOnCompleteListener {
+            ref.child(getUserID).child("Teman").push().setValue(teman).addOnCompleteListener {
                 Toast.makeText(this, "Data Berhasil Disimpan", Toast.LENGTH_SHORT).show()
                 Nama!!.setText("")
                 Email!!.setText("")
