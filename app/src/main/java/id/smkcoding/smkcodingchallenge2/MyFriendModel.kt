@@ -4,11 +4,10 @@ data class MyFriendModel (
     private var nama : String,
     private var email: String,
     private var telp : String,
-    private var alamat: String) {
+    private var alamat: String,
+    private var key: String? = null) {
         constructor() : this("", "", "", "") {
         }
-
-    private var key: String? = null
 
     fun getKey(): String? {
         return key
