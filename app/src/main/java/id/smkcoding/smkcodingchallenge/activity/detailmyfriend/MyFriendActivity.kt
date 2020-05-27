@@ -9,6 +9,9 @@ import com.google.android.material.internal.ContextUtils.getActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import id.smkcoding.smkcodingchallenge.R
+import id.smkcoding.smkcodingchallenge.activity.main.MainActivity
+import id.smkcoding.smkcodingchallenge.model.MyFriendModel
 import kotlinx.android.synthetic.main.activity_my_friend.*
 
 

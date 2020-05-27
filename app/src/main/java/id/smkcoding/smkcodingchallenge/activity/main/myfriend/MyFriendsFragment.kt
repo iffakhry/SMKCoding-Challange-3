@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import id.smkcoding.smkcodingchallenge.adapter.MyFriendAdapter
+import id.smkcoding.smkcodingchallenge.model.MyFriendModel
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_my_friends.*
 
@@ -117,13 +117,13 @@ class MyFriendsFragment : Fragment(), MyFriendAdapter.dataListener {
         if (ref != null) {
             ref.child(getUserID)
                 .child("Teman")
-                .child(data?.getKey().toString())
+                .child(data?.id.toString())
                 .removeValue()
                 .addOnSuccessListener {
                     Toast.makeText(context, "Data Berhasil Dihapus", Toast.LENGTH_SHORT).show()
                 }
         } else {
-            Toast.makeText(context, data?.getKey().toString(), Toast.LENGTH_LONG).show()
+            Toast.makeText(context, data?.id.toString(), Toast.LENGTH_LONG).show()
         }
     }
 }

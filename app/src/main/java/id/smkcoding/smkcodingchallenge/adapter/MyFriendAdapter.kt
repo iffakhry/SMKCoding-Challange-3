@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import id.smkcoding.smkcodingchallenge.R
+import id.smkcoding.smkcodingchallenge.model.MyFriendModel
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.my_friends_item.*
 
@@ -39,10 +41,10 @@ class MyFriendAdapter(
         holder.bindItem(list.get(position))
 
         //Mengambil Nilai/Value yenag terdapat pada RecyclerView berdasarkan Posisi Tertentu
-        val Nama: String? = list.get(position).getNama()
-        val Email: String? = list.get(position).getEmail()
-        val Telp: String? = list.get(position).getTelp()
-        val Alamat: String? = list.get(position).getAlamat()
+        val Nama: String? = list.get(position).nama
+        val Email: String? = list.get(position).email
+        val Telp: String? = list.get(position).telp
+        val Alamat: String? = list.get(position).alamat
 
         //Memasukan Nilai/Value kedalam View (TextView: NIM, Nama, Jurusan)
         holder.txtFriendName.setText("Nama: $Nama")
@@ -65,11 +67,11 @@ class MyFriendAdapter(
                          pada listMahasiswa, berdasarkan posisinya untuk dikirim pada activity selanjutnya
                          */
                         val bundle = Bundle()
-                        bundle.putString("dataNama", list.get(position).getNama())
-                        bundle.putString("dataEmail", list.get(position).getEmail())
-                        bundle.putString("dataTelp", list.get(position).getTelp())
-                        bundle.putString("dataAlamat", list.get(position).getAlamat())
-                        bundle.putString("getPrimaryKey", list.get(position).getKey())
+                        bundle.putString("dataNama", list.get(position).nama)
+                        bundle.putString("dataEmail", list.get(position).email)
+                        bundle.putString("dataTelp", list.get(position).telp)
+                        bundle.putString("dataAlamat", list.get(position).alamat)
+                        bundle.putString("getPrimaryKey", list.get(position).id)
                         val intent = Intent(view.context, MyUpdateActivity::class.java)
                         intent.putExtras(bundle)
                         context.startActivity(intent)
@@ -83,13 +85,13 @@ class MyFriendAdapter(
                         if (ref != null) {
                             ref.child(getUserID)
                                 .child("Teman")
-                                .child(list.get(position)?.getKey().toString())
+                                .child(list.get(position)?.id.toString())
                                 .removeValue()
                                 .addOnSuccessListener {
                                     Toast.makeText(context, "Data Berhasil Dihapus", Toast.LENGTH_SHORT).show()
                                 }
                         } else {
-                            Toast.makeText(context, list.get(position)?.getKey().toString(), Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, list.get(position)?.id.toString(), Toast.LENGTH_LONG).show()
                         }
                     }
                 }
@@ -103,10 +105,10 @@ class MyFriendAdapter(
     class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
         var ListItem: LinearLayout? = null
         fun bindItem(item: MyFriendModel) {
-            txtFriendName.text = item.getNama()
-            txtFriendEmail.text = item.getEmail()
-            txtFriendTelp.text = item.getTelp()
-            txtFriendAlamat.text = item.getAlamat()
+            txtFriendName.text = item.nama
+            txtFriendEmail.text = item.email
+            txtFriendTelp.text = item.telp
+            txtFriendAlamat.text = item.alamat
             ListItem = itemView.findViewById<LinearLayout>(R.id.list_item)
 
         }

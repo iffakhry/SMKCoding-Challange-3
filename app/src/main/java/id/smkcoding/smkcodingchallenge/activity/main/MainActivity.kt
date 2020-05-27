@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.tabs.TabLayoutMediator.TabConfigurationStrategy
-import id.smkcoding.smkcodingchallenge.R
 import id.smkcoding.smkcodingchallenge.adapter.ViewPagerAdapter
+import id.smkcoding.smkcodingchallenge.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 

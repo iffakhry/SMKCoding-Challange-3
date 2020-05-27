@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="id.smkcoding.smkcodingchallenge2">
+    package="id.smkcoding.smkcodingchallenge">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,10 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MyUpdateActivity"></activity>
-        <activity android:name=".MyFriendActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".activity.detail"></activity>
+        <activity android:name=".activity.login.LoginActivity" />
+        <activity android:name=".activity.main.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

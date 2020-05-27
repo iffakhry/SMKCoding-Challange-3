@@ -6,7 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "my_friend")
 class MyFriendEntity {
-    @PrimaryKey @ColumnInfo(name = "email") val email: String? = null
+    @PrimaryKey  @ColumnInfo(name = "id") val id: String? = null
+    @ColumnInfo(name = "email") val email: String? = null
     @ColumnInfo(name = "nama") val nama: String? = null
     @ColumnInfo(name = "kelamin") val kelamin: String? = null
     @ColumnInfo(name = "telp") val telp: String? = null
