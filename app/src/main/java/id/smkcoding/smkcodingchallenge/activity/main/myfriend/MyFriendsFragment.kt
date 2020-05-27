@@ -6,16 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import id.smkcoding.smkcodingchallenge.adapter.MyFriendAdapter
 import kotlinx.android.synthetic.*
-import kotlinx.android.synthetic.main.fragment_github.*
 import kotlinx.android.synthetic.main.fragment_my_friends.*
 
 /**
@@ -23,13 +21,12 @@ import kotlinx.android.synthetic.main.fragment_my_friends.*
  * Use the [MyFriendsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MyFriendsFragment : Fragment() {
+class MyFriendsFragment : Fragment(), MyFriendAdapter.dataListener {
 
     lateinit var ref : DatabaseReference
     lateinit var auth: FirebaseAuth
     lateinit var dataTeman: ArrayList<MyFriendModel>
     lateinit var listTeman : ArrayList<MyFriendModel>
-    lateinit var rvView: RecyclerView
 
     private fun simulasiDataTeman() {
         listTeman = ArrayList()
@@ -98,8 +95,7 @@ class MyFriendsFragment : Fragment() {
                         dataTeman
                     )
 
-                Toast.makeText(getContext(), "Data Berhasil Dimuat", Toast.LENGTH_LONG)
-                    .show()
+                Toast.makeText(getContext(), "Data Berhasil Dimuat", Toast.LENGTH_LONG).show()
             }
         })
     }
@@ -109,4 +105,25 @@ class MyFriendsFragment : Fragment() {
         this.clearFindViewByIdCache()
     }
 
+    override fun onDeleteData(data: MyFriendModel, position: Int) {
+        /*
+         * Kode ini akan dipanggil ketika method onDeleteData
+         * dipanggil dari adapter pada RecyclerView melalui interface.
+         * kemudian akan menghapus data berdasarkan primary key dari data tersebut
+         * Jika berhasil, maka akan memunculkan Toast
+         */
+        auth = FirebaseAuth.getInstance()
+        val getUserID: String = auth?.getCurrentUser()?.getUid().toString()
+        if (ref != null) {
+            ref.child(getUserID)
+                .child("Teman")
+                .child(data?.getKey().toString())
+                .removeValue()
+                .addOnSuccessListener {
+                    Toast.makeText(context, "Data Berhasil Dihapus", Toast.LENGTH_SHORT).show()
+                }
+        } else {
+            Toast.makeText(context, data?.getKey().toString(), Toast.LENGTH_LONG).show()
+        }
+    }
 }
