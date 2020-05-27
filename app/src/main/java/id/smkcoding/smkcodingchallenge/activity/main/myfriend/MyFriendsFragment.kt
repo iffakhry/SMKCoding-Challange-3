@@ -1,24 +1,20 @@
-package id.smkcoding.smkcodingchallenge.activity.main.myfriend
+package id.smkcoding.smkcodingchallenge2
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import id.smkcoding.smkcodingchallenge.activity.detailmyfriend.MyFriendActivity
-import id.smkcoding.smkcodingchallenge.R
-import id.smkcoding.smkcodingchallenge.adapter.MyFriendAdapter
-import id.smkcoding.smkcodingchallenge.entity.MyFriendEntity
-import id.smkcoding.smkcodingchallenge.model.MyFriendModel
 import kotlinx.android.synthetic.*
+import kotlinx.android.synthetic.main.fragment_github.*
 import kotlinx.android.synthetic.main.fragment_my_friends.*
 
 /**
@@ -29,21 +25,20 @@ import kotlinx.android.synthetic.main.fragment_my_friends.*
 class MyFriendsFragment : Fragment() {
 
     lateinit var ref : DatabaseReference
-    private var auth: FirebaseAuth? = null
-    lateinit var dataTeman : List<MyFriendEntity>
-    val viewModel by activityViewModels<MyFriendsViewModel>()
-    var adapter =  MyFriendAdapter(
-        requireContext(),
-        dataTeman
-    )
+    lateinit var auth: FirebaseAuth
+    lateinit var dataTeman: ArrayList<MyFriendModel>
+    lateinit var listTeman : ArrayList<MyFriendModel>
+    lateinit var rvView: RecyclerView
+
+    private fun simulasiDataTeman() {
+        listTeman = ArrayList()
+        listTeman.add(MyFriendModel("Fakhry", "fakhry@smkcoding.id", "081123123123", "Malang"))
+        listTeman.add(MyFriendModel("Ahmad","ahmad@smkcoding.id", "085123123123", "Malang"))
+    }
 
     private fun tampilTeman() {
         rv_listMyFriends.layoutManager = LinearLayoutManager(activity)
-        rv_listMyFriends.adapter = adapter
-
-        viewModel.allMyFriends.observe(viewLifecycleOwner, Observer { words ->
-            words?.let { adapter.setData(it) }
-        })
+        rv_listMyFriends.adapter = MyFriendAdapter(activity!!, listTeman)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,43 +56,43 @@ class MyFriendsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
+        getData()
         fab.setOnClickListener {
             val intent = Intent (getActivity(), MyFriendActivity::class.java)
             getActivity()?.startActivity(intent)
         }
     }
 
-    private fun initView() {
-        //simulasiDataTeman()
-        getData()
-        tampilTeman()
-    }
-
     private fun getData() {
         //Mendapatkan Referensi Database
+        Toast.makeText(getContext(), "Mohon Tunggu Sebentar...", Toast.LENGTH_LONG).show()
+        auth = FirebaseAuth.getInstance()
         val getUserID: String = auth?.getCurrentUser()?.getUid().toString()
-        ref = FirebaseDatabase.getInstance().getReference("Teman") //path: Teman
-        ref.child(getUserID).addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
+        ref = FirebaseDatabase.getInstance().getReference()
+        ref.child(getUserID).child("Teman").addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+                Toast.makeText(getContext(), "Database Error yaa...", Toast.LENGTH_LONG).show()
+            }
 
-                    for (snapshot in dataSnapshot.children) {
-                        //Mapping data pada DataSnapshot ke dalam objek mahasiswa
-                        val teman: MyFriendModel? =
-                            snapshot.getValue(MyFriendModel::class.java)
-                        //Mengambil Primary Key, digunakan untuk proses Update dan Delete
-//                        teman!!.setKey(snapshot.key)
-//                        datateman!!.add(teman)
-                    }
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                //Inisialisasi ArrayList
+                dataTeman = java.util.ArrayList<MyFriendModel>()
+                for (snapshot in dataSnapshot.children) {
+                    //Mapping data pada DataSnapshot ke dalam objek mahasiswa
+                    val teman = snapshot.getValue(MyFriendModel::class.java)
+                    //Mengambil Primary Key, digunakan untuk proses Update dan Delete
+                    teman?.setKey(snapshot.key)
+                    dataTeman.add(teman!!)
                 }
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Log.e(
-                        "MyFriendsFragment",
-                        databaseError.details + " " + databaseError.message
-                    )
-                }
-            })
+                //Memasang Adapter pada RecyclerView
+                rv_listMyFriends.layoutManager = LinearLayoutManager(context)
+                rv_listMyFriends.adapter = MyFriendAdapter(context!!, dataTeman)
+
+                Toast.makeText(getContext(), "Data Berhasil Dimuat", Toast.LENGTH_LONG)
+                    .show()
+            }
+        })
     }
 
     override fun onDestroy() {
