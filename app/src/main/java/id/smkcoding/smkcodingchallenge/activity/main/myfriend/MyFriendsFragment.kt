@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import id.smkcoding.smkcodingchallenge.adapter.MyFriendAdapter
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_github.*
 import kotlinx.android.synthetic.main.fragment_my_friends.*
@@ -38,7 +39,11 @@ class MyFriendsFragment : Fragment() {
 
     private fun tampilTeman() {
         rv_listMyFriends.layoutManager = LinearLayoutManager(activity)
-        rv_listMyFriends.adapter = MyFriendAdapter(activity!!, listTeman)
+        rv_listMyFriends.adapter =
+            MyFriendAdapter(
+                activity!!,
+                listTeman
+            )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,7 +92,11 @@ class MyFriendsFragment : Fragment() {
 
                 //Memasang Adapter pada RecyclerView
                 rv_listMyFriends.layoutManager = LinearLayoutManager(context)
-                rv_listMyFriends.adapter = MyFriendAdapter(context!!, dataTeman)
+                rv_listMyFriends.adapter =
+                    MyFriendAdapter(
+                        context!!,
+                        dataTeman
+                    )
 
                 Toast.makeText(getContext(), "Data Berhasil Dimuat", Toast.LENGTH_LONG)
                     .show()
