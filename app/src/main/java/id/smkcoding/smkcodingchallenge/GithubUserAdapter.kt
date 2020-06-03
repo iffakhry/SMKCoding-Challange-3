@@ -1,8 +1,4 @@
-<<<<<<< HEAD:app/src/main/java/id/smkcoding/smkcodingchallenge/adapter/GithubUserAdapter.kt
-package id.smkcoding.smkcodingchallenge.adapter
-=======
 package id.smkcoding.smkcodingchallenge
->>>>>>> room:app/src/main/java/id/smkcoding/smkcodingchallenge/GithubUserAdapter.kt
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -10,26 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import id.smkcoding.smkcodingchallenge.model.GithubUserModel
-import id.smkcoding.smkcodingchallenge.R
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.github_user_item.*
 
 /**
  * Created by Fakhry on 5/7/20.
  */
-class GithubUserAdapter(private val context: Context, private val items: List<GithubUserModel>, private val listener: (GithubUserModel)-> Unit) :
+class GithubUserAdapter(private val context: Context, private val items: List<GithubUserItem>, private val listener: (GithubUserItem)-> Unit) :
 RecyclerView.Adapter<GithubUserAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(
-            context,
-            LayoutInflater.from(context).inflate(
-                R.layout.github_user_item,
-                parent,
-                false
-            )
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(context, LayoutInflater.from(context).inflate(R.layout.github_user_item, parent, false))
 
     override fun getItemCount(): Int {
         return items.size
@@ -40,7 +26,7 @@ RecyclerView.Adapter<GithubUserAdapter.ViewHolder>() {
     }
 
     class ViewHolder(val context: Context, override val containerView : View) : RecyclerView.ViewHolder(containerView), LayoutContainer{
-        fun bindItem(item: GithubUserModel, listener: (GithubUserModel) -> Unit) {
+        fun bindItem(item: GithubUserItem, listener: (GithubUserItem) -> Unit) {
             txtUsername.text = item.login
             txtUserRepo.text = item.reposUrl
 

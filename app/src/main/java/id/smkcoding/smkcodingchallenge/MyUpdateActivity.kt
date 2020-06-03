@@ -1,18 +1,18 @@
-package id.smkcoding.smkcodingchallenge2
+package id.smkcoding.smkcodingchallenge
 
-import android.content.Intent.getIntent
 import android.os.Bundle
-import android.text.TextUtils
 import android.text.TextUtils.isEmpty
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.viewModels
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-
+import id.smkcoding.smkcodingchallenge.viewmodel.MyFriendFragmentViewModel
+import id.smkcoding.smkcodingchallenge.viewmodel.MyUpdateViewModel
 
 class MyUpdateActivity : AppCompatActivity() {
 
@@ -29,11 +29,17 @@ class MyUpdateActivity : AppCompatActivity() {
     private var cekTelp: String? = null
     private var cekAlamat: String? = null
 
+    private val viewModel by viewModels<MyUpdateViewModel>()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_update)
 
         getSupportActionBar()?.setTitle("Update Data")
+
+        viewModel.init(this)
+
         namaBaru = findViewById(R.id.new_nama)
         emailBaru = findViewById(R.id.new_email)
         telpBaru = findViewById(R.id.new_telp)
@@ -59,13 +65,13 @@ class MyUpdateActivity : AppCompatActivity() {
                 /*Menjalankan proses update data.
                   Method Setter digunakan untuk mendapakan data baru yang diinputkan User.
                 */
-                val temanBaru = MyFriendModel(cekNama!!, cekEmail!!, cekTelp!!, cekAlamat!!)
-                val getUserID: String = auth?.getCurrentUser()?.getUid().toString()
                 val getKey: String = getIntent().getStringExtra("getPrimaryKey").toString()
+                val temanBaru = MyFriendModel(cekNama!!, cekEmail!!, cekTelp!!, cekAlamat!!, getKey)
+                val getUserID: String = auth?.getCurrentUser()?.getUid().toString()
                 database!!.child(getUserID).child("Teman")
                     .child(getKey).setValue(temanBaru)
                     .addOnCompleteListener {
-                    Toast.makeText(this, "Data Berhasil Disimpan", Toast.LENGTH_SHORT).show()
+                            viewModel.updateData(temanBaru)
                             finish();
                         }
                     }

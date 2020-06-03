@@ -4,14 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import id.smkcoding.smkcodingchallenge.MyFriendModel
 import id.smkcoding.smkcodingchallenge.dao.MyFriendDao
-import id.smkcoding.smkcodingchallenge.entity.MyFriendEntity
 
-// Annotates class to be a Room Database with a table (entity) of the Word class
-@Database(entities = arrayOf(MyFriendEntity::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(MyFriendModel::class), version = 1, exportSchema = false)
 public abstract class MyFriendDatabase : RoomDatabase() {
 
-    abstract fun wordDao(): MyFriendDao
+    abstract fun myFriendDao(): MyFriendDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the
@@ -28,7 +27,7 @@ public abstract class MyFriendDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     MyFriendDatabase::class.java,
-                    "word_database"
+                    "my_friend_database"
                 ).build()
                 INSTANCE = instance
                 return instance

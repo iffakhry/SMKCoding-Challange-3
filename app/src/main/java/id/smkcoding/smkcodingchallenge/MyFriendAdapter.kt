@@ -1,4 +1,4 @@
-package id.smkcoding.smkcodingchallenge2
+package id.smkcoding.smkcodingchallenge
 
 import android.app.AlertDialog
 import android.content.Context
@@ -23,13 +23,23 @@ import kotlinx.android.synthetic.main.my_friends_item.*
 
 class MyFriendAdapter(
     private val context: Context,
-    private val list: ArrayList<MyFriendModel>
+    private var list: List<MyFriendModel>
 )
     : RecyclerView.Adapter<MyFriendAdapter.ViewHolder> () {
+
+    //Deklarasi objek dari Interfece
+    var listener: dataListener? = null
+    lateinit var ref : DatabaseReference
+    lateinit var auth: FirebaseAuth
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         LayoutInflater.from(context).inflate(R.layout.my_friends_item, parent, false)
     )
+
+    fun setData(list: List<MyFriendModel>){
+        this.list = list
+        notifyDataSetChanged()
+    }
 
     override fun getItemCount(): Int {
         return list.size
@@ -39,21 +49,16 @@ class MyFriendAdapter(
         holder.bindItem(list.get(position))
 
         //Mengambil Nilai/Value yenag terdapat pada RecyclerView berdasarkan Posisi Tertentu
-        val Nama: String? = list.get(position).getNama()
-        val Email: String? = list.get(position).getEmail()
-        val Telp: String? = list.get(position).getTelp()
-        val Alamat: String? = list.get(position).getAlamat()
+        val Nama: String? = list.get(position).nama
+        val Email: String? = list.get(position).email
+        val Telp: String? = list.get(position).telp
+        val Alamat: String? = list.get(position).alamat
 
         //Memasukan Nilai/Value kedalam View (TextView: NIM, Nama, Jurusan)
         holder.txtFriendName.setText("Nama: $Nama")
         holder.txtFriendEmail.setText("Email: $Email")
         holder.txtFriendTelp.setText("Telp: $Telp")
         holder.txtFriendAlamat.setText("Alamat: $Alamat")
-
-        //Deklarasi objek dari Interfece
-        val listener: dataListener? = null
-        lateinit var ref : DatabaseReference
-        lateinit var auth: FirebaseAuth
 
         holder.ListItem?.setOnLongClickListener(OnLongClickListener { view ->
             val action = arrayOf("Update", "Delete")
@@ -65,31 +70,31 @@ class MyFriendAdapter(
                          pada listMahasiswa, berdasarkan posisinya untuk dikirim pada activity selanjutnya
                          */
                         val bundle = Bundle()
-                        bundle.putString("dataNama", list.get(position).getNama())
-                        bundle.putString("dataEmail", list.get(position).getEmail())
-                        bundle.putString("dataTelp", list.get(position).getTelp())
-                        bundle.putString("dataAlamat", list.get(position).getAlamat())
-                        bundle.putString("getPrimaryKey", list.get(position).getKey())
+                        bundle.putString("dataNama", list.get(position).nama)
+                        bundle.putString("dataEmail", list.get(position).email)
+                        bundle.putString("dataTelp", list.get(position).telp)
+                        bundle.putString("dataAlamat", list.get(position).alamat)
+                        bundle.putString("getPrimaryKey", list.get(position).key)
                         val intent = Intent(view.context, MyUpdateActivity::class.java)
                         intent.putExtras(bundle)
                         context.startActivity(intent)
                     }
                     1 -> {
                         //Menggunakan interface untuk mengirim data mahasiswa, yang akan dihapus
-                        //listener?.onDeleteData(list.get(position), position) // gak jadi pakai listener >> gagal
+                        listener?.onDeleteData(list.get(position), position) // gak jadi pakai listener >> gagal
                         auth = FirebaseAuth.getInstance()
                         ref = FirebaseDatabase.getInstance().getReference()
                         val getUserID: String = auth?.getCurrentUser()?.getUid().toString()
                         if (ref != null) {
                             ref.child(getUserID)
                                 .child("Teman")
-                                .child(list.get(position)?.getKey().toString())
+                                .child(list.get(position)?.key.toString())
                                 .removeValue()
                                 .addOnSuccessListener {
                                     Toast.makeText(context, "Data Berhasil Dihapus", Toast.LENGTH_SHORT).show()
                                 }
                         } else {
-                            Toast.makeText(context, list.get(position)?.getKey().toString(), Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, list.get(position)?.key.toString(), Toast.LENGTH_LONG).show()
                         }
                     }
                 }
@@ -103,10 +108,10 @@ class MyFriendAdapter(
     class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
         var ListItem: LinearLayout? = null
         fun bindItem(item: MyFriendModel) {
-            txtFriendName.text = item.getNama()
-            txtFriendEmail.text = item.getEmail()
-            txtFriendTelp.text = item.getTelp()
-            txtFriendAlamat.text = item.getAlamat()
+            txtFriendName.text = item.nama
+            txtFriendEmail.text = item.email
+            txtFriendTelp.text = item.telp
+            txtFriendAlamat.text = item.alamat
             ListItem = itemView.findViewById<LinearLayout>(R.id.list_item)
 
         }

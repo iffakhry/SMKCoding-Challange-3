@@ -1,8 +1,4 @@
-<<<<<<< HEAD:app/src/main/java/id/smkcoding/smkcodingchallenge/activity/main/github/GithubFragment.kt
-package id.smkcoding.smkcodingchallenge.activity.main.github
-=======
 package id.smkcoding.smkcodingchallenge
->>>>>>> room:app/src/main/java/id/smkcoding/smkcodingchallenge/GithubFragment.kt
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,12 +7,6 @@ import android.view.ViewGroup
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-<<<<<<< HEAD:app/src/main/java/id/smkcoding/smkcodingchallenge/activity/main/github/GithubFragment.kt
-import id.smkcoding.smkcodingchallenge.model.GithubUserModel
-import id.smkcoding.smkcodingchallenge.R
-import id.smkcoding.smkcodingchallenge.adapter.GithubUserAdapter
-=======
->>>>>>> room:app/src/main/java/id/smkcoding/smkcodingchallenge/GithubFragment.kt
 import id.smkcoding.smkcodingchallenge.data.GithubService
 import id.smkcoding.smkcodingchallenge.data.apiRequest
 import id.smkcoding.smkcodingchallenge.data.httpClient
@@ -64,14 +54,14 @@ class GithubFragment : Fragment() {
         val apiRequest = apiRequest<GithubService>(httpClient)
 
         val call = apiRequest.getUsers()
-        call.enqueue(object : Callback<List<GithubUserModel>> {
+        call.enqueue(object : Callback<List<GithubUserItem>> {
 
-            override fun onFailure(call: Call<List<GithubUserModel>>, t: Throwable) {
+            override fun onFailure(call: Call<List<GithubUserItem>>, t: Throwable) {
                 dismissLoading(swipeRefreshLayout)
 
             }
 
-            override fun onResponse(call: Call<List<GithubUserModel>>, response: Response<List<GithubUserModel>>) {
+            override fun onResponse(call: Call<List<GithubUserItem>>, response: Response<List<GithubUserItem>>) {
                 dismissLoading(swipeRefreshLayout)
 
                 when {
@@ -96,18 +86,14 @@ class GithubFragment : Fragment() {
         })
     }
 
-    private fun tampilGithubUser(githubUsers: List<GithubUserModel>) {
+    private fun tampilGithubUser(githubUsers: List<GithubUserItem>) {
         listGithubUser.layoutManager = LinearLayoutManager(context)
-        listGithubUser.adapter =
-            GithubUserAdapter(
-                context!!,
-                githubUsers
-            ) {
+        listGithubUser.adapter = GithubUserAdapter(context!!, githubUsers) {
 
-                val githubUser = it
-                tampilToast(context!!, githubUser.login)
+            val githubUser = it
+            tampilToast(context!!, githubUser.login)
 
-            }
+        }
     }
 
 

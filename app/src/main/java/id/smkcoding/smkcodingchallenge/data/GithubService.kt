@@ -1,6 +1,6 @@
 package id.smkcoding.smkcodingchallenge.data
 
-import id.smkcoding.smkcodingchallenge.model.GithubUserModel
+import id.smkcoding.smkcodingchallenge.GithubUserItem
 import retrofit2.Call
 import retrofit2.http.GET
 
@@ -10,6 +10,6 @@ import retrofit2.http.GET
 interface GithubService {
 
     @GET("users")
-    fun getUsers(): Call<List<GithubUserModel>>
+    fun getUsers(): Call<List<GithubUserItem>>
 
 }

@@ -1,15 +1,10 @@
-<<<<<<< HEAD:app/src/main/java/id/smkcoding/smkcodingchallenge/activity/main/profil/ProfilFragment.kt
-package id.smkcoding.smkcodingchallenge.activity.main.profil
-=======
 package id.smkcoding.smkcodingchallenge
->>>>>>> room:app/src/main/java/id/smkcoding/smkcodingchallenge/ProfilFragment.kt
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import id.smkcoding.smkcodingchallenge.R
 
 /**
  * A simple [Fragment] subclass.

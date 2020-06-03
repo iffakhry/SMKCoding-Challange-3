@@ -1,14 +1,10 @@
-<<<<<<< HEAD:app/src/main/java/id/smkcoding/smkcodingchallenge/model/GithubUserModel.kt
-package id.smkcoding.smkcodingchallenge.model
-=======
 package id.smkcoding.smkcodingchallenge
->>>>>>> room:app/src/main/java/id/smkcoding/smkcodingchallenge/GithubUserItem.kt
 
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class GithubUserModel(
+data class GithubUserItem(
     @SerializedName("avatar_url")
     val avatarUrl: String,
     @SerializedName("events_url")
